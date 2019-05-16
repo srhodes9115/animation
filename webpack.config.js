@@ -1,10 +1,14 @@
-const path = require('path');
+const webpack = require( 'webpack' )
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  watch: false, 
-  mode: 'development', 
-  entry: './src/index.js',
+  watch: false,
+  mode: 'development',
+  entry: [
+    'webpack-hot-middleware/client?reload=true',
+    './src/index.js'  
+  ],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist')
@@ -21,6 +25,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html'
-    })
-  ] 
-};
+    }),
+    new webpack.HotModuleReplacementPlugin()
+  ]
+}

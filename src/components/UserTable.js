@@ -51,10 +51,10 @@ class UserTable extends React.Component {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Birthday</TableCell>
-                                <TableCell>Zip Code</TableCell>
+                                <TableCell id="name" onClick={ event => this.props.handleSort( 'name' ) }>Name</TableCell>
+                                <TableCell id="email" onClick={ event => this.props.handleSort( 'email' ) }>Email</TableCell>
+                                <TableCell id="birthday" onClick={ event => this.props.handleSort( 'birthday' ) }>Birthday</TableCell>
+                                <TableCell id="zipcode" onClick={ event => this.props.handleSort( 'zipcode' ) }>Zip Code</TableCell>
                                 <TableCell />
                             </TableRow>
                         </TableHead>
@@ -105,6 +105,7 @@ UserTable.propTypes = {
     onRowSelected       : PropTypes.func.isRequired,
     onDeleteUser        : PropTypes.func.isRequired,
     users               : PropTypes.array.isRequired,
+    handleSort          : PropTypes.func.isRequired,
     
     // injected by material-ui
 	classes				: PropTypes.object.isRequired

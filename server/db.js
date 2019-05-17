@@ -10,7 +10,6 @@ let db = new sqlite3.Database('./mydb', (err) => {
 
 db.serialize( () => {
   db.run("CREATE TABLE if not exists users(name, email, birthday, zipcode)")
-  db.run("INSERT INTO users VALUES('Shannon Rhodes', 'shannon.rhodes@disney.com', '4/13/94', '06107')")
 })
  
 // close the database connection

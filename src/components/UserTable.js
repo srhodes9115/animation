@@ -35,6 +35,19 @@ class UserTable extends React.Component {
         this.props.onDeleteUser( user, index )
     }
 
+    handleRowClick( event, index ) {
+        console.log( 'handleRowClick' )
+        console.log( this.props.selected )
+        let newArray = this.props.selected
+        if ( newArray.length === 1 ) {
+            newArray.pop()
+        }
+
+        newArray.push( index )
+        console.log( newArray )
+        this.props.onRowSelected( newArray )
+    }
+
     render() {
         return (
             <div className="userTable">
@@ -52,8 +65,10 @@ class UserTable extends React.Component {
                         <TableBody>
                             {
                                 this.props.users.map( ( user, index ) => {
+                                    console.log( this.props.selected )
+                                    const isSelected = this.props.selected.includes( index )
                                     return (
-                                        <TableRow key={ index }>
+                                        <TableRow key={ index } hover onClick={ event => this.handleRowClick( event, index ) } selected={ isSelected }>
                                             <TableCell>{ user.name }</TableCell>
                                             <TableCell>{ user.email }</TableCell>
                                             <TableCell>{ user.birthday }</TableCell>
@@ -91,6 +106,8 @@ class UserTable extends React.Component {
 }
 
 UserTable.propTypes = {
+    selected            : PropTypes.array.isRequired,
+    onRowSelected       : PropTypes.func.isRequired,
     onDeleteUser        : PropTypes.func.isRequired,
     users               : PropTypes.array.isRequired,
     

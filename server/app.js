@@ -5,11 +5,14 @@ const port = 3000
 const config = require('../webpack.config')
 const compiler = webpack( config )
 const sqlite3 = require('sqlite3').verbose();
-const db = require('./db')
 
-
-app.use( require('webpack-dev-middleware')( compiler));
+app.use(require('webpack-dev-middleware')( compiler));
 app.use(require('webpack-hot-middleware')(compiler));
+app.use(express.json())
+app.use(express.urlencoded({
+  extended: true
+}
+))
 
 app.use('/', express.static('./dist', {
   index: "index.html"
@@ -42,13 +45,11 @@ app.post( '/api/v1/delete', ( req, res ) => {
           return console.error(err.message)
         }
       });
-    let sql = `DELETE FROM users WHERE zipcode = 6107`
+    let sql = `DELETE FROM users WHERE zipcode = ${req.query.zipcode}`
     db.run( sql, ( err ) => {
-        console.log( 'return from db call' )
-        console.log( err )
         if ( err ) return console.error( err.message )
         res.status(200).send( {
-            succes: true
+            success: true
         })
     } )
     db.close()
@@ -56,6 +57,8 @@ app.post( '/api/v1/delete', ( req, res ) => {
 
 
 app.post( '/api/v1/user', ( req, res ) => {
+  console.log( 'app post' )
+  console.log( req.body )
   let db = new sqlite3.Database('./mydb', (err) => {
     if (err) {
       return console.error(err.message)

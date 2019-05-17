@@ -19,10 +19,11 @@ class App extends React.Component {
   constructor( props ) {
     super( props )
 
-    this.state = { users: [] }
+    this.state = { users: [], selected: [] }
 
     this.onDeleteUser = this.onDeleteUser.bind( this )
     this.onCreateUser = this.onCreateUser.bind( this )
+    this.onRowSelected = this.onRowSelected.bind( this )
   }
 
   componentDidMount() {
@@ -30,23 +31,28 @@ class App extends React.Component {
       .end( ( err, res ) => {
         if ( err ) console.error( 'error handling' )
         
-        this.setState( { users: res.body.users } )
+        let newSelected = []
+        newSelected.push( 0 )
+        this.setState( { users: res.body.users, selected: newSelected } )
       } )
   }
 
   onCreateUser( user ) {
-    console.log( 'inside onAddUser app.js')
+    console.log( 'onCreateUser' )
     superagent.post( '/api/v1/user' )
+      .send( user )
+      .set( 'Content-Type', 'application/json' )
       .end( ( err, res ) => {
-        
+        if ( err ) console.error( 'error handling' )
+
+        let newState = this.state
       } )
   }
 
 
   onDeleteUser( deleteItem, index ) {
-    //call delete api
     superagent.post( 'api/v1/delete' )
-      .query( { email: deleteItem.email } )
+      .query( { zipcode: deleteItem.zipcode } )
       .end( ( err, res ) => {
         if ( err ) {
           console.error( 'error handling required' )
@@ -59,6 +65,17 @@ class App extends React.Component {
       } )
   }
 
+  onRowSelected( newSelectedArray ) {
+    console.log( 'onRowSelected in app.js' )
+    console.log( newSelectedArray )
+    // this.state = { users: [], selected: [] }
+    let newState = this.state
+    newState.selected = newSelectedArray
+
+    console.log( newState )
+    this.setState( newState )
+  }
+
   render() {
     return (
       <div className={ this.props.classes.app }>
@@ -68,10 +85,13 @@ class App extends React.Component {
         <UserCarousel
           users={  ( this.state.users ) ? this.state.users : [] }
           onCreateUser={ this.onCreateUser }
+          selected={ this.state.selected }
         />
         <UserTable
           users={ ( this.state.users ) ? this.state.users : []  }
           onDeleteUser={ this.onDeleteUser }
+          onRowSelected={ this.onRowSelected }
+          selected={ this.state.selected }
         />
       </div>
     );

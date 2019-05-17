@@ -40,7 +40,6 @@ class UserCarousel extends React.Component {
     }
 
     onCreateUser( user ) {
-        console.log( 'insidee user carousel on create user' )
         this.closeDialog()
 
         this.props.onCreateUser( user)
@@ -58,28 +57,32 @@ class UserCarousel extends React.Component {
             )
         }
 
+        let user = this.props.users[ this.props.selected[0] ]
+
         return (
-        <div className="userCarousel">
-            {
-                this.props.users.map( ( user, index ) => {
-                    return (
-                        <Card className={ this.props.classes.card } key={ index }>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">{ user.name }</Typography>
-                                <Typography component="p">{ user.email }</Typography>
-                                <Typography component="p">{ user.birthday }</Typography>
-                                <Typography component="p">{ user.zipcode }</Typography>
-                                
-                            </CardContent>
+            <div className="userCarousel">
+                    {
+                        this.props.selected.length > 0 && this.props.users.length > 0  ? (
+                            <Card className={ this.props.classes.card } key={ this.props.selected[0] }>
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="h2">{ user.name }</Typography>
+                                    <Typography component="p">{ user.email }</Typography>
+                                    <Typography component="p">{ user.birthday }</Typography>
+                                    <Typography component="p">{ user.zipcode }</Typography>
+                                    
+                                </CardContent>
+                                <div className={ this.props.classes.cardActions }>
+                                    <Button color="primary" variant="contained" onClick={ this.onAddUser } >Add New User</Button>
+                                </div>
+                            </Card>
+                        ) : (
                             <div className={ this.props.classes.cardActions }>
                                 <Button color="primary" variant="contained" onClick={ this.onAddUser } >Add New User</Button>
                             </div>
-                        </Card>
-                    )
-                } )
-            }
-            { addDialog }
-        </div>
+                        )
+                    }
+                { addDialog }
+            </div> 
         );
     }
   }
@@ -87,6 +90,7 @@ class UserCarousel extends React.Component {
 UserCarousel.propTypes = {
     users               : PropTypes.array.isRequired,
     onCreateUser        : PropTypes.func.isRequired,
+    selected            : PropTypes.array.isRequired,
 
     // injected by material-ui
     classes				: PropTypes.object.isRequired

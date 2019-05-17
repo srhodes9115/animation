@@ -37,8 +37,6 @@ app.get('/api/v1/users', ( req, res ) => {
 
 
 app.post( '/api/v1/delete', ( req, res ) => {
-    console.log( 'in post' )
-    console.log( req.query.email )
     let db = new sqlite3.Database('./mydb', (err) => {
         if (err) {
           return console.error(err.message)
@@ -53,6 +51,19 @@ app.post( '/api/v1/delete', ( req, res ) => {
             succes: true
         })
     } )
+    db.close()
+} )
+
+
+app.post( '/api/v1/user', ( req, res ) => {
+  let db = new sqlite3.Database('./mydb', (err) => {
+    if (err) {
+      return console.error(err.message)
+    }
+  });
+  let sql = ''
+  //db.run("INSERT INTO users VALUES('Shannon Rhodes', 'shannon.rhodes@disney.com', '4/13/94', '06107')")
+  db.close()
 } )
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

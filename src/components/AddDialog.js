@@ -10,38 +10,62 @@ import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
 
 const styles = ( theme ) => ( {
-
+    dialog_paper		: {
+        display             : 'flex',
+        alignItems          : 'center',
+		minHeight			: '65%',
+		minWidth			: '35%',
+    },
+    dialog_content : {
+        width: '75%'
+    },
+    form_control : {
+        width: '100%'
+    }
 } )
 
 
-class UserCarousel extends React.Component {
+class AddDialog extends React.Component {
     constructor( props ) {
         super( props )
 
-        this.state = { name: '' }
+        this.state = { user: { name: '', email: '', birthday: '', zipcode: '' } }
 
+        this.createUser = this.createUser.bind( this )
         this.handleChange = this.handleChange.bind( this )
     }
 
-    handleChange = name => event => {
-        console.log( handleChange )
-        console.log( name )
-        console.log( event.target.value )
-        this.setState( { [name] : event.target.value } )
+    handleChange( event ) {
+        let newUser = this.state.user
+        newUser[ event.target.id] = event.target.value 
+        this.setState( { user : newUser } )
+    }
+
+    createUser() {
+        console.log( 'createUser fcn in add dialog' )
+        console.log( this.state.user )
+        this.props.onCreateUser( this.state.user )
     }
 
     render() {
         return (
-            <Dialog disableBackdropClick open={ this.props.isOpen } onClose={ this.props.closeDialog }>
+            <Dialog classes={ { paper: this.props.classes.dialog_paper } } disableBackdropClick open={ this.props.isOpen } onClose={ this.props.closeDialog }>
                 <DialogTitle>Add New User</DialogTitle>
-                <DialogContent>
-                    <FormControl>
-                        <TextField id="name" label="Name" value={ this.state.name } onChange={ this.handleChange( 'name') }></TextField>
+                <DialogContent className={ this.props.classes.dialog_content }>
+                    <FormControl className={ this.props.classes.form_control }>
+                        <TextField id="name" label="Name" value={ this.state.name } onChange={ this.handleChange }></TextField>
+                        <TextField id="email" label="Email" value={ this.state.email } onChange={ this.handleChange }></TextField>
+                        <TextField id="birthday" label="Birthday" value={ this.state.birthday } onChange={ this.handleChange }></TextField>
+                        <TextField id="zipcode" label="ZipCode" value={ this.state.zipcode } onChange={ this.handleChange }></TextField>
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={ this.createUser }>Add User</Button>
-                    <Button variant="contained" onClick={ this.props.closeDialog }>Cancel</Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={ this.createUser }
+                        disabled={ !( this.state.user.name !== '' && this.state.user.email !== '' && this.state.user.birthday !== '' && this.state.user.zipcode !== '' ) }>Add User</Button>
+                    <Button variant="contained" color="secondary" onClick={ this.props.closeDialog }>Cancel</Button>
                 </DialogActions>
             </Dialog>
         )
@@ -52,6 +76,7 @@ class UserCarousel extends React.Component {
 AddDialog.propTypes = {
     isOpen              : PropTypes.bool.isRequired,
     closeDialog         : PropTypes.func.isRequired,
+    onCreateUser        : PropTypes.func.isRequired,
 
     // injected by material-ui
     classes				: PropTypes.object.isRequired

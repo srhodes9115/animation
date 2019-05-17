@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import AddDialog from './AddDialog'
 
 const styles = ( theme ) => ( {
     card : {
@@ -22,15 +23,42 @@ class UserCarousel extends React.Component {
     constructor( props ) {
       super( props )
 
+      this.state = { 
+          addDialog : { open: false }
+      }
+
       this.onAddUser = this.onAddUser.bind( this )
+      this.closeDialog = this.closeDialog.bind( this )
     }
 
     onAddUser() {
-        this.props.onAddUser()
+        this.setState( { addDialog: { open: true } } )
+    }
+
+    closeDialog() {
+        this.setState( { addDialog: { open: false } } )
+    }
+
+    onCreateUser( user ) {
+        console.log( 'insidee user carousel on create user' )
+        this.closeDialog()
+
+        this.props.onCreateUser( user)
     }
   
     render() {
-      return (
+        let addDialog = ( <div /> )
+        if ( this.state.addDialog.open ) {
+            addDialog = (
+                <AddDialog
+                    isOpen={ this.state.addDialog.open }
+                    closeDialog={ this.closeDialog }
+                    onCreateUser={ this.props.onCreateUser }
+                />
+            )
+        }
+
+        return (
         <div className="userCarousel">
             {
                 this.props.users.map( ( user, index ) => {
@@ -50,14 +78,15 @@ class UserCarousel extends React.Component {
                     )
                 } )
             }
+            { addDialog }
         </div>
-      );
+        );
     }
   }
   
 UserCarousel.propTypes = {
     users               : PropTypes.array.isRequired,
-    onAddUser           : PropTypes.func.isRequired,
+    onCreateUser        : PropTypes.func.isRequired,
 
     // injected by material-ui
     classes				: PropTypes.object.isRequired

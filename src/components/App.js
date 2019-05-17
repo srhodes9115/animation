@@ -22,7 +22,7 @@ class App extends React.Component {
     this.state = { users: [] }
 
     this.onDeleteUser = this.onDeleteUser.bind( this )
-    this.onAddUser = this.onAddUser.bind( this )
+    this.onCreateUser = this.onCreateUser.bind( this )
   }
 
   componentDidMount() {
@@ -34,10 +34,14 @@ class App extends React.Component {
       } )
   }
 
-  onAddUser( ) {
+  onCreateUser( user ) {
     console.log( 'inside onAddUser app.js')
     superagent.post( '/api/v1/user' )
+      .end( ( err, res ) => {
+        
+      } )
   }
+
 
   onDeleteUser( deleteItem, index ) {
     //call delete api
@@ -63,7 +67,7 @@ class App extends React.Component {
         </Typography>
         <UserCarousel
           users={  ( this.state.users ) ? this.state.users : [] }
-          onAddUser={ this.onAddUser }
+          onCreateUser={ this.onCreateUser }
         />
         <UserTable
           users={ ( this.state.users ) ? this.state.users : []  }

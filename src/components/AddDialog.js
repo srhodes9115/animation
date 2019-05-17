@@ -54,7 +54,7 @@ class AddDialog extends React.Component {
                         <TextField id="name" label="Name" value={ this.state.name } onChange={ this.handleChange }></TextField>
                         <TextField id="email" label="Email" value={ this.state.email } onChange={ this.handleChange }></TextField>
                         <TextField id="birthday" label="Birthday" value={ this.state.birthday } onChange={ this.handleChange }></TextField>
-                        <TextField id="zipcode" label="ZipCode" value={ this.state.zipcode } onChange={ this.handleChange }></TextField>
+                        <TextField id="zipcode" label="ZipCode" maxLength="6" value={ this.state.zipcode } onChange={ this.handleChange }></TextField>
                     </FormControl>
                 </DialogContent>
                 <DialogActions>

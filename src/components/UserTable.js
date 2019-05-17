@@ -11,8 +11,6 @@ import TablePagination from '@material-ui/core/TablePagination'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import Tooltip from '@material-ui/core/Tooltip'
-import EditIcon from '@material-ui/icons/Edit'
 
 const styles = ( theme ) => ( {
     paper : {
@@ -75,8 +73,8 @@ class UserTable extends React.Component {
                     <TablePagination
                         rowsPerPageOptions={ [] }
                         component="div"
-                        count={ 5 }
-                        rowsPerPage={ NUM_POSTS_PER_FETCH }
+                        count={ this.props.users.length }
+                        rowsPerPage={ 5 }
                         page={ 0 }
                         backIconButtonProps={ {
                             'aria-label': 'Previous Page',

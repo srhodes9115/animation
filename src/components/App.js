@@ -22,26 +22,30 @@ class App extends React.Component {
     this.state = { users: [] }
 
     this.onDeleteUser = this.onDeleteUser.bind( this )
+    this.onAddUser = this.onAddUser.bind( this )
   }
 
   componentDidMount() {
     superagent.get('/api/v1/users')
       .end( ( err, res ) => {
-        if ( err ) console.log( 'error handling' )
+        if ( err ) console.error( 'error handling' )
         
         this.setState( { users: res.body.users } )
       } )
   }
 
+  onAddUser( ) {
+    console.log( 'inside onAddUser app.js')
+    superagent.post( '/api/v1/user' )
+  }
+
   onDeleteUser( deleteItem, index ) {
-    console.log( 'onDeleteUser in app' )
-    console.log( deleteItem )
     //call delete api
     superagent.post( 'api/v1/delete' )
       .query( { email: deleteItem.email } )
       .end( ( err, res ) => {
         if ( err ) {
-          console.log( 'error handling required' )
+          console.error( 'error handling required' )
         }
         else {
           let users = this.state.users
@@ -57,8 +61,14 @@ class App extends React.Component {
         <Typography component="h2" variant="h1" gutterBottom align="center" color="primary">
           People Viewer
         </Typography>
-        <UserCarousel users={  ( this.state.users ) ? this.state.users : [] } />
-        <UserTable users={ ( this.state.users ) ? this.state.users : []  } onDeleteUser={ this.onDeleteUser } />
+        <UserCarousel
+          users={  ( this.state.users ) ? this.state.users : [] }
+          onAddUser={ this.onAddUser }
+        />
+        <UserTable
+          users={ ( this.state.users ) ? this.state.users : []  }
+          onDeleteUser={ this.onDeleteUser }
+        />
       </div>
     );
   }

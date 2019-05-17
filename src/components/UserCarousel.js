@@ -15,7 +15,9 @@ const styles = ( theme ) => ( {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        paddingBottom: 16
+        paddingBottom: 16,
+        marginRight: 10,
+        marginLeft: 10
     }
 } )
 
@@ -29,6 +31,7 @@ class UserCarousel extends React.Component {
 
       this.onAddUser = this.onAddUser.bind( this )
       this.closeDialog = this.closeDialog.bind( this )
+      this.createUser = this.createUser.bind( this )
     }
 
     onAddUser() {
@@ -39,9 +42,8 @@ class UserCarousel extends React.Component {
         this.setState( { addDialog: { open: false } } )
     }
 
-    onCreateUser( user ) {
+    createUser( user ) {
         this.closeDialog()
-
         this.props.onCreateUser( user)
     }
   
@@ -52,7 +54,7 @@ class UserCarousel extends React.Component {
                 <AddDialog
                     isOpen={ this.state.addDialog.open }
                     closeDialog={ this.closeDialog }
-                    onCreateUser={ this.props.onCreateUser }
+                    createUser={ this.createUser }
                 />
             )
         }

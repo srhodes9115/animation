@@ -42,9 +42,7 @@ class AddDialog extends React.Component {
     }
 
     createUser() {
-        console.log( 'createUser fcn in add dialog' )
-        console.log( this.state.user )
-        this.props.onCreateUser( this.state.user )
+        this.props.createUser( this.state.user )
     }
 
     render() {
@@ -76,7 +74,7 @@ class AddDialog extends React.Component {
 AddDialog.propTypes = {
     isOpen              : PropTypes.bool.isRequired,
     closeDialog         : PropTypes.func.isRequired,
-    onCreateUser        : PropTypes.func.isRequired,
+    createUser        : PropTypes.func.isRequired,
 
     // injected by material-ui
     classes				: PropTypes.object.isRequired

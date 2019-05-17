@@ -5,6 +5,7 @@ const port = 3000
 const config = require('../webpack.config')
 const compiler = webpack( config )
 const sqlite3 = require('sqlite3').verbose();
+const db = require( './db')
 
 app.use(require('webpack-dev-middleware')( compiler));
 app.use(require('webpack-hot-middleware')(compiler));
@@ -45,7 +46,7 @@ app.post( '/api/v1/delete', ( req, res ) => {
           return console.error(err.message)
         }
       });
-    let sql = `DELETE FROM users WHERE zipcode = ${req.query.zipcode}`
+    let sql = `DELETE FROM users WHERE zipcode = '${req.query.zipcode}'`
     db.run( sql, ( err ) => {
         if ( err ) return console.error( err.message )
         res.status(200).send( {
@@ -57,15 +58,20 @@ app.post( '/api/v1/delete', ( req, res ) => {
 
 
 app.post( '/api/v1/user', ( req, res ) => {
-  console.log( 'app post' )
-  console.log( req.body )
+  let user = req.body
   let db = new sqlite3.Database('./mydb', (err) => {
     if (err) {
       return console.error(err.message)
     }
   });
-  let sql = ''
-  //db.run("INSERT INTO users VALUES('Shannon Rhodes', 'shannon.rhodes@disney.com', '4/13/94', '06107')")
+  let sql = `INSERT INTO users VALUES('${user.name}','${user.email}','${user.birthday}','${user.zipcode}')`
+  db.run( sql, ( err ) => {
+    if ( err ) return console.error( err.message )
+
+    res.status( 200 ).send( {
+      success: true
+    } )
+  })
   db.close()
 } )
 

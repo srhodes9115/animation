@@ -27,6 +27,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.getUsers()
+  }
+
+  getUsers() {
     superagent.get('/api/v1/users')
       .end( ( err, res ) => {
         if ( err ) console.error( 'error handling' )
@@ -38,14 +42,13 @@ class App extends React.Component {
   }
 
   onCreateUser( user ) {
-    console.log( 'onCreateUser' )
     superagent.post( '/api/v1/user' )
       .send( user )
       .set( 'Content-Type', 'application/json' )
       .end( ( err, res ) => {
         if ( err ) console.error( 'error handling' )
 
-        let newState = this.state
+        this.getUsers()
       } )
   }
 
@@ -58,21 +61,17 @@ class App extends React.Component {
           console.error( 'error handling required' )
         }
         else {
-          let users = this.state.users
-          let newArray = users.splice( index )
-          this.setState( users )
+          let newState = this.state
+          newState.users.splice( index, 1 )
+          this.setState( { newState } )
         }
       } )
   }
 
   onRowSelected( newSelectedArray ) {
-    console.log( 'onRowSelected in app.js' )
-    console.log( newSelectedArray )
-    // this.state = { users: [], selected: [] }
     let newState = this.state
     newState.selected = newSelectedArray
 
-    console.log( newState )
     this.setState( newState )
   }
 

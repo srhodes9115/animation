@@ -21,10 +21,12 @@
   "homepage": "https://github.com/srhodes9115/animation#readme",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
     "express": "^4.16.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "sqlite3": "^4.0.8"
+    "sqlite3": "^4.0.8",
+    "superagent": "^5.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

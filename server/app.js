@@ -12,7 +12,7 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.use(express.json())
 app.use(express.urlencoded({
   extended: true
-}
+}))
 
 app.use('/', express.static('./dist', {
   index: "index.html"
